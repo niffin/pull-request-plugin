@@ -1,0 +1,33 @@
+{
+  "name": "pull-request-plugin",
+  "version": "0.0.1",
+  "description": "View github's pull request diffs with tabs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niffin/pull-request-plugin.git"
+  },
+  "keywords": [
+    "github",
+    "pull-request",
+    "code-review"
+  ],
+  "author": "Niffin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niffin/pull-request-plugin/issues"
+  },
+  "homepage": "https://github.com/niffin/pull-request-plugin#readme",
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "eslint": "^3.8.1",
+    "eslint-import-resolver-node": "^0.2.3",
+    "eslint-plugin-import": "^2.0.1",
+    "webpack": "^1.13.2"
+  }
+}
