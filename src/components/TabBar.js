@@ -19,6 +19,10 @@ export default function TabBar (tabs) {
   return wrapper;
 }
 
+export function getTabLabels (filePaths) {
+  return filePaths;
+}
+
 function onTabBarItemClick ({ tabs, tabBarItems, tabBarItem }) {
   toggleTabs(tabs, tabBarItem.dataset.tabId);
   setTabBarItemStatus(tabBarItems, tabBarItem.dataset.tabId);

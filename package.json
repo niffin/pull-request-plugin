@@ -4,7 +4,8 @@
   "description": "View github's pull request diffs with tabs",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --progress --colors --watch"
+    "dev": "webpack --progress --colors --watch --no-cache",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,29 @@
   "homepage": "https://github.com/niffin/pull-request-plugin#readme",
   "devDependencies": {
     "babel-core": "^6.17.0",
+    "babel-jest": "^16.0.0",
     "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.16.0",
     "eslint": "^3.8.1",
-    "eslint-import-resolver-node": "^0.2.3",
+    "eslint-import-resolver-webpack": "^0.6.0",
     "eslint-plugin-import": "^2.0.1",
+    "jest": "^16.0.2",
+    "jest-cli": "^16.0.2",
     "webpack": "^1.13.2"
+  },
+  "babel": { "presets": [ "es2015" ] },
+  "jest": {
+    "scriptPreprocessor" : "<rootDir>/node_modules/babel-jest",
+    "moduleNameMapper": {
+      "^components": "<rootDir>/src/components",
+      "^utils": "<rootDir>/src/utils"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
+    ],
+    "verbose": true
   }
 }
