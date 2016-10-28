@@ -77,6 +77,7 @@
 	  value: true
 	});
 	exports.default = TabBar;
+	exports.getTabLabels = getTabLabels;
 
 	var _TabBarItem = __webpack_require__(3);
 
@@ -106,6 +107,10 @@
 
 	  (0, _setStyles2.default)(wrapper, styles);
 	  return wrapper;
+	}
+
+	function getTabLabels(filePaths) {
+	  return filePaths;
 	}
 
 	function onTabBarItemClick(_ref) {

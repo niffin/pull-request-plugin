@@ -37,7 +37,6 @@
   },
   "babel": { "presets": [ "es2015" ] },
   "jest": {
-    "scriptPreprocessor" : "<rootDir>/node_modules/babel-jest",
     "moduleNameMapper": {
       "^components": "<rootDir>/src/components",
       "^utils": "<rootDir>/src/utils"
