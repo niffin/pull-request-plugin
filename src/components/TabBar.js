@@ -1,8 +1,13 @@
 import TabBarItem from 'components/TabBarItem';
 import setStyles from 'utils/setStyles';
+import { getTabLabels } from 'utils/getTabLabels';
 
 export default function TabBar (tabs) {
-  const tabBarItems = tabs.map(pullRequestEl => TabBarItem(pullRequestEl)),
+  const filePaths   = tabs.map(tab => [ ...tab.children ].filter(hasPathDataProp)[0].dataset.path),
+        tabLabels   = getTabLabels(filePaths),
+        tabBarItems = tabs.map((pullRequestEl, index) => {
+          return TabBarItem(pullRequestEl, tabLabels[index]);
+        }),
         wrapper     = document.createElement('div'),
         styles      = {
           display        : 'flex',
@@ -17,10 +22,6 @@ export default function TabBar (tabs) {
 
   setStyles(wrapper, styles);
   return wrapper;
-}
-
-export function getTabLabels (filePaths) {
-  return filePaths;
 }
 
 function onTabBarItemClick ({ tabs, tabBarItems, tabBarItem }) {
@@ -38,4 +39,8 @@ function setTabBarItemStatus (tabBarItems, selectedTabId) {
   tabBarItems.forEach(tabBarItem => {
     tabBarItem.style.fontWeight = tabBarItem.dataset.tabId === selectedTabId ? 'bold' : 'normal';
   });
+}
+
+function hasPathDataProp (el) {
+  return el && el.dataset && el.dataset.path;
 }

@@ -77,7 +77,6 @@
 	  value: true
 	});
 	exports.default = TabBar;
-	exports.getTabLabels = getTabLabels;
 
 	var _TabBarItem = __webpack_require__(3);
 
@@ -87,11 +86,19 @@
 
 	var _setStyles2 = _interopRequireDefault(_setStyles);
 
+	var _getTabLabels = __webpack_require__(5);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	function TabBar(tabs) {
-	  var tabBarItems = tabs.map(function (pullRequestEl) {
-	    return (0, _TabBarItem2.default)(pullRequestEl);
+	  var filePaths = tabs.map(function (tab) {
+	    return [].concat(_toConsumableArray(tab.children)).filter(hasPathDataProp)[0].dataset.path;
+	  }),
+	      tabLabels = (0, _getTabLabels.getTabLabels)(filePaths),
+	      tabBarItems = tabs.map(function (pullRequestEl, index) {
+	    return (0, _TabBarItem2.default)(pullRequestEl, tabLabels[index]);
 	  }),
 	      wrapper = document.createElement('div'),
 	      styles = {
@@ -107,10 +114,6 @@
 
 	  (0, _setStyles2.default)(wrapper, styles);
 	  return wrapper;
-	}
-
-	function getTabLabels(filePaths) {
-	  return filePaths;
 	}
 
 	function onTabBarItemClick(_ref) {
@@ -134,6 +137,10 @@
 	  });
 	}
 
+	function hasPathDataProp(el) {
+	  return el && el.dataset && el.dataset.path;
+	}
+
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
@@ -151,12 +158,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	function TabBarItem(el) {
-	  var filePath = [].concat(_toConsumableArray(el.children)).filter(hasPathDataProp)[0].dataset.path,
-	      tabLabel = getFileNameFrom(filePath),
-	      wrapper = document.createElement('div'),
+	function TabBarItem(el, tabLabel) {
+	  var wrapper = document.createElement('div'),
 	      styles = { cursor: 'pointer' };
 
 	  wrapper.textContent = tabLabel;
@@ -165,14 +168,6 @@
 
 	  (0, _setStyles2.default)(wrapper, styles);
 	  return wrapper;
-	}
-
-	function hasPathDataProp(el) {
-	  return el && el.dataset && el.dataset.path;
-	}
-
-	function getFileNameFrom(path) {
-	  return path.split('/')[path.split('/').length - 1];
 	}
 
 /***/ },
@@ -189,6 +184,47 @@
 	  Object.keys(styles).forEach(function (key) {
 	    el.style[key] = styles[key];
 	  });
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getTabLabels = getTabLabels;
+	exports.hasDupe = hasDupe;
+	exports.addParentFolder = addParentFolder;
+	function getTabLabels(filePaths) {
+	  var fileNames = filePaths.map(getFileNameFrom);
+
+	  return fileNames.map(function (name, index) {
+	    if (hasDupe(fileNames, name)) {
+	      return addParentFolder(filePaths, index, name);
+	    }
+
+	    return name;
+	  });
+	}
+
+	function getFileNameFrom(path) {
+	  return path.split('/')[path.split('/').length - 1];
+	}
+
+	function hasDupe(array, value) {
+	  return array.filter(function (item) {
+	    return item === value;
+	  }).length > 1;
+	}
+
+	function addParentFolder(paths, index, name) {
+	  var path = paths[index].split('/'),
+	      distanceFromEnd = name.split('/').length;
+
+	  return path[path.length - 1 - distanceFromEnd] + '/' + name;
 	}
 
 /***/ }
