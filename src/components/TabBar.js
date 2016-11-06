@@ -6,7 +6,7 @@ export default function TabBar (tabs) {
   const filePaths   = tabs.map(tab => [ ...tab.children ].filter(hasPathDataProp)[0].dataset.path),
         tabLabels   = getTabLabels(filePaths),
         tabBarItems = tabs.map((pullRequestEl, index) => {
-          return TabBarItem(pullRequestEl, tabLabels[index]);
+          return TabBarItem(pullRequestEl, tabLabels[index], filePaths[index]);
         }),
         wrapper     = document.createElement('div'),
         styles      = {
