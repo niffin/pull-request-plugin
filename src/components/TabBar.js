@@ -20,6 +20,8 @@ export default function TabBar (tabs) {
     wrapper.append(tabBarItem);
   });
 
+  tabBarItems[0].click();
+
   setStyles(wrapper, styles);
   return wrapper;
 }

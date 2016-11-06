@@ -4,4 +4,3 @@ import TabBar from 'components/TabBar';
   const diffs = [ ...document.querySelectorAll('.file.js-details-container') ];
   document.getElementById('files').before(TabBar(diffs));
 })(window, document);
-
