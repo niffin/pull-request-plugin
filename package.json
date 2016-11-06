@@ -4,7 +4,7 @@
   "description": "View github's pull request diffs with tabs",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --progress --colors --watch --no-cache",
+    "dev": "webpack --progress --colors --watch --no-cache -p",
     "test:watch": "jest --watch"
   },
   "repository": {
