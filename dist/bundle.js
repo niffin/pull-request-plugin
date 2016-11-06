@@ -196,35 +196,47 @@
 	  value: true
 	});
 	exports.getTabLabels = getTabLabels;
-	exports.hasDupe = hasDupe;
-	exports.addParentFolder = addParentFolder;
-	function getTabLabels(filePaths) {
-	  var fileNames = filePaths.map(getFileNameFrom);
+	function getTabLabels(paths) {
+	  var reversedPaths = paths.map(function (p) {
+	    return p.split('/').reverse().join('/');
+	  });
+	  var splitReversedPaths = reversedPaths.map(function (p) {
+	    return p.split('/');
+	  });
 
-	  return fileNames.map(function (name, index) {
-	    if (hasDupe(fileNames, name)) {
-	      return addParentFolder(filePaths, index, name);
-	    }
+	  var indexTilUnique = splitReversedPaths.map(function (path) {
+	    return path.reduce(function (acc, fragment, i) {
+	      if (typeof acc === 'string') {
+	        return acc;
+	      } else if (splitReversedPaths.filter(exceptFor(path)).some(hasSameValueInIndex(i, fragment))) {
+	        acc += 1;
+	      } else {
+	        return String(acc);
+	      }
 
-	    return name;
+	      return acc;
+	    }, 0);
+	  });
+
+	  return reversedPaths.map(function (path, i) {
+	    var splitPath = path.split('/'),
+	        isSingleElement = splitPath.length === 1,
+	        isIndexZero = indexTilUnique[i] == 0;
+
+	    return isSingleElement || isIndexZero ? splitPath[0] : splitPath.slice(0, Number(indexTilUnique[i]) + 1).reverse().join('/');
 	  });
 	}
 
-	function getFileNameFrom(path) {
-	  return path.split('/')[path.split('/').length - 1];
+	function exceptFor(itemToFilterOut) {
+	  return function (element) {
+	    return element !== itemToFilterOut;
+	  };
 	}
 
-	function hasDupe(array, value) {
-	  return array.filter(function (item) {
-	    return item === value;
-	  }).length > 1;
-	}
-
-	function addParentFolder(paths, index, name) {
-	  var path = paths[index].split('/'),
-	      distanceFromEnd = name.split('/').length;
-
-	  return path[path.length - 1 - distanceFromEnd] + '/' + name;
+	function hasSameValueInIndex(i, value) {
+	  return function (array) {
+	    return array[i] === value;
+	  };
 	}
 
 /***/ }
